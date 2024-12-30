@@ -1,0 +1,59 @@
+<title>Threads & Thrift</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+<nav class="navbar">
+  <div class="navbar-left">
+    <span class="brand-name">Threads & Thrift</span>
+  </div>
+  <div class="navbar-right">
+    <a href="http://localhost:4200/home" class="nav-link">Dashboard</a>
+    <a href="http://localhost:4200/allitems" class="nav-link">Items</a>
+    <a href="http://localhost:4200/alltrades" class="nav-link">Trades</a>
+    <button (click)="logout()">Logout</button>
+  </div>
+</nav>
+<body id="container">
+<div class="trades-container">
+  <h2>Trade Proposal</h2>
+  <div *ngFor="let trade of tradesProposedByUser" class="trade-card">
+    <div class="trade-info">
+      <h3>{{ trade.item1.title }} for {{ trade.item2.title }}</h3>
+      <p>Proposed to: {{ trade.item2.username }}</p>
+      <p>Status: {{ trade.status }}</p>
+      <p>Posted on: {{ trade.createdAt | date }}</p>
+      <p>Selected Preference: {{ trade.selectedPreference }}</p>
+    </div>
+    <div class="trade-image">
+      <img [src]="'http://localhost:3000/uploads/' + trade.item1.image[0]" alt="Item Image" />
+      <img [src]="'http://localhost:3000/uploads/' + trade.item2.image[0]" alt="Item Image" />
+
+    </div>
+  </div>
+
+  <h2>Trade offers</h2>
+  <div *ngFor="let trade of tradesProposedToUser" class="trade-card">
+    <div class="trade-info">
+      <h3>{{ trade.item1.title }} for {{ trade.item2.title }}</h3>
+      <p>Proposed by: {{ trade.item1.username }}</p>
+      <p>Status: {{ trade.status }}</p>
+      <p>Posted on: {{ trade.createdAt | date }}</p>
+      <p>Selected Preference: {{ trade.selectedPreference }}</p>
+    </div>
+    <div class="trade-image">
+      <img [src]="'http://localhost:3000/uploads/' + trade.item1.image[0]" alt="Item Image" />
+      <img [src]="'http://localhost:3000/uploads/' + trade.item2.image[0]" alt="Item Image" />
+
+    </div>
+    <div class="action-buttons">
+      <button (click)="respondToTrade(trade._id, 'accepted')">Accept</button>
+      <button (click)="respondToTrade(trade._id, 'rejected')">Reject</button>
+    </div>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="pagination">
+    <button *ngFor="let pageNum of [].constructor(totalPages); let i = index" (click)="onPageChange(i + 1)">
+      {{ i + 1 }}
+    </button>
+  </div>
+</div>
+</body>
